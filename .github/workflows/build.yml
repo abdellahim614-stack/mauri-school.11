@@ -24,30 +24,30 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Flutter project and add packages
+      - name: Clean Dart files from markdown tags
         run: |
-          flutter create --org com.maurischool app_project
-          cd app_project
-          flutter pub add http shared_preferences intl url_launcher
-          
-          # إضافة صلاحية الاتصال بالإنترنت للاتصال بقاعدة بيانات Firebase
-          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"/>' android/app/src/main/AndroidManifest.xml
+          sed -i '/^```/d' user_app_main.dart
+          sed -i '/^```/d' admin_app_main.dart
 
-      - name: Build Teacher APK (تطبيق المعلم)
+      - name: Build Teacher APK
         run: |
-          cp user_app_main.dart app_project/lib/main.dart
-          cd app_project
-          sed -i 's/android:label="[^"]*"/android:label="تطبيق المعلم"/g' android/app/src/main/AndroidManifest.xml
+          flutter create --org com.maurischool.teacher teacher_project
+          cp user_app_main.dart teacher_project/lib/main.dart
+          cd teacher_project
+          flutter pub add http shared_preferences url_launcher
+          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"/>' android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:label="[^"]*"/android:label="سكرتير المدرسة"/g' android/app/src/main/AndroidManifest.xml
           flutter build apk --release --no-tree-shake-icons
           cp build/app/outputs/flutter-apk/app-release.apk ../teacher-app.apk
 
-      - name: Build Admin APK (تطبيق المدير)
+      - name: Build Admin APK
         run: |
-          cp admin_app_main.dart app_project/lib/main.dart
-          cd app_project
-          sed -i 's/android:label="[^"]*"/android:label="تطبيق المدير"/g' android/app/src/main/AndroidManifest.xml
-          sed -i 's/applicationId "com.maurischool.app_project"/applicationId "com.maurischool.admin"/g' android/app/build.gradle* || true
-          sed -i 's/applicationId = "com.maurischool.app_project"/applicationId = "com.maurischool.admin"/g' android/app/build.gradle* || true
+          flutter create --org com.maurischool.admin admin_project
+          cp admin_app_main.dart admin_project/lib/main.dart
+          cd admin_project
+          flutter pub add http
+          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"/>' android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:label="[^"]*"/android:label="لوحة المدير"/g' android/app/src/main/AndroidManifest.xml
           flutter build apk --release --no-tree-shake-icons
           cp build/app/outputs/flutter-apk/app-release.apk ../admin-app.apk
 
