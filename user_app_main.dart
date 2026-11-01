@@ -13,23 +13,14 @@ class AppConfig {
   static const String adminWhatsApp = '22248584627';
   static const String displayPhone = '48584627';
   static const String subscriptionPriceText = '200 أوقية جديدة للسنة الكاملة';
-
   static const String databaseUrl =
-      'https://mauri-school-6d5f1-default-rtdb.firebaseio.com';
+      '[https://mauri-school-6d5f1-default-rtdb.firebaseio.com](https://mauri-school-6d5f1-default-rtdb.firebaseio.com)';
 }
 
 const Map<String, List<String>> mauritaniaWilayas = {
   'اترارزه': ['روصو', 'بتلميت', 'المذرذرة', 'اركيز', 'كرمسين', 'واد الناقة'],
   'آدرار': ['أطار', 'شنقيط', 'أوجفت', 'وادان'],
-  'الحوض الشرقي': [
-    'النعمة',
-    'تمبدغة',
-    'باسكنو',
-    'جكني',
-    'آمرج',
-    'ولاته',
-    'عدل بكرو'
-  ],
+  'الحوض الشرقي': ['النعمة', 'تمبدغة', 'باسكنو', 'جكني', 'آمرج', 'ولاته', 'عدل بكرو'],
   'الحوض الغربي': ['العيون', 'طينطان', 'كوبني', 'تامشكط', 'الطويل'],
   'انشيري': ['أكجوجت', 'بنشاب'],
   'لبراكنه': ['ألاك', 'بوغي', 'مقطع لحجار', 'بابابي', 'امبان'],
@@ -93,10 +84,8 @@ class LocalAndCloudService {
     final prefs = await SharedPreferences.getInstance();
 
     try {
-      final url =
-          Uri.parse('${AppConfig.databaseUrl}/teachers/$cleanPhone.json');
-      final response =
-          await http.get(url).timeout(const Duration(seconds: 8));
+      final url = Uri.parse('${AppConfig.databaseUrl}/teachers/$cleanPhone.json');
+      final response = await http.get(url).timeout(const Duration(seconds: 8));
 
       if (isRegister) {
         if (response.statusCode == 200 && response.body != 'null') {
@@ -109,10 +98,7 @@ class LocalAndCloudService {
           'isPaid': false,
           'createdAt': DateTime.now().toIso8601String(),
         };
-        await http.put(
-          url,
-          body: jsonEncode(newTeacherData),
-        );
+        await http.put(url, body: jsonEncode(newTeacherData));
         await _saveUserLocally(
           prefs,
           phone: cleanPhone,
@@ -293,7 +279,6 @@ class _AuthGateScreenState extends State<AuthGateScreen> {
 
 class TeacherAuthScreen extends StatefulWidget {
   final VoidCallback onAuthSuccess;
-
   const TeacherAuthScreen({super.key, required this.onAuthSuccess});
 
   @override
@@ -303,7 +288,6 @@ class TeacherAuthScreen extends StatefulWidget {
 class _TeacherAuthScreenState extends State<TeacherAuthScreen> {
   bool _isRegister = true;
   bool _submitting = false;
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -364,8 +348,7 @@ class _TeacherAuthScreenState extends State<TeacherAuthScreen> {
                       color: const Color(0xFF4A90E2),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child:
-                        const Icon(Icons.school, size: 38, color: Colors.white),
+                    child: const Icon(Icons.school, size: 38, color: Colors.white),
                   ),
                   const SizedBox(height: 12),
                   const Text(
@@ -374,9 +357,7 @@ class _TeacherAuthScreenState extends State<TeacherAuthScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    _isRegister
-                        ? 'إنشاء حساب معلم جديد'
-                        : 'تسجيل الدخول إلى حسابك',
+                    _isRegister ? 'إنشاء حساب معلم جديد' : 'تسجيل الدخول إلى حسابك',
                     style: const TextStyle(color: Colors.black54, fontSize: 14),
                   ),
                   const SizedBox(height: 20),
@@ -489,7 +470,7 @@ class AcademicYearsScreen extends StatelessWidget {
 
   Future<void> _openWhatsAppSupport() async {
     final uri = Uri.parse(
-      'https://wa.me/${AppConfig.adminWhatsApp}?text=${Uri.encodeComponent("السلام عليكم، أريد الاستفسار عن تطبيق سكرتير المدرسة (رقمي: ${teacher['phone']})")}',
+      '[https://wa.me/$](https://wa.me/$){AppConfig.adminWhatsApp}?text=${Uri.encodeComponent("السلام عليكم، أريد الاستفسار عن تطبيق سكرتير المدرسة (رقمي: ${teacher['phone']})")}',
     );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -585,8 +566,7 @@ class AcademicYearsScreen extends StatelessWidget {
                     color: const Color(0xFF4A90E2),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child:
-                      const Icon(Icons.school, color: Colors.white, size: 22),
+                  child: const Icon(Icons.school, color: Colors.white, size: 22),
                 ),
                 const SizedBox(width: 8),
                 const Column(
@@ -594,6 +574,488 @@ class AcademicYearsScreen extends StatelessWidget {
                   children: [
                     Text(
                       'سكرتير المدرسة',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      "SECRETAIRE DE L'ECOLE",
+                      style: TextStyle(fontSize: 9, color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout, color: Color(0xFF4A90E2)),
+              tooltip: 'تسجيل الخروج',
+              onPressed: onLogout,
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'أهلا بك ${teacher['name']}',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'اختر سنة دراسية',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            _buildYearCard(
+              context,
+              yearTitle: '2026 - 2027',
+              statusText: 'جارية',
+              isCurrent: true,
+            ),
+            const SizedBox(height: 12),
+            _buildYearCard(
+              context,
+              yearTitle: '2025 - 2026',
+              statusText: 'منتهية',
+              isCurrent: false,
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: _openWhatsAppSupport,
+              borderRadius: BorderRadius.circular(14),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE8F5E9),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.chat, color: Color(0xFF2E7D32)),
+                    SizedBox(width: 8),
+                    Text(
+                      'تواصل مع الدعم الفني عبر واتساب (${AppConfig.displayPhone})',
+                      style: TextStyle(
+                        color: Color(0xFF2E7D32),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SchoolsListScreen extends StatefulWidget {
+  final String yearTitle;
+  final Map<String, dynamic> teacher;
+
+  const SchoolsListScreen({
+    super.key,
+    required this.yearTitle,
+    required this.teacher,
+  });
+
+  @override
+  State<SchoolsListScreen> createState() => _SchoolsListScreenState();
+}
+
+class _SchoolsListScreenState extends State<SchoolsListScreen> {
+  List> _schools = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSchools();
+  }
+
+  Future<void> _loadSchools() async {
+    final list = await LocalAndCloudService.getSchools(widget.yearTitle);
+    if (!mounted) return;
+    setState(() => _schools = list);
+  }
+
+  Future<void> _showAddSchoolDialog() async {
+    final nameCtrl = TextEditingController();
+    String selectedWilaya = mauritaniaWilayas.keys.first;
+    String selectedMoughataa = mauritaniaWilayas[selectedWilaya]!.first;
+
+    await showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            final moughataas = mauritaniaWilayas[selectedWilaya] ?? [];
+            return AlertDialog(
+              title: const Text('إضافة مدرسة جديدة'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: nameCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'اسم المدرسة',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    DropdownButtonFormField<String>(
+                      value: selectedWilaya,
+                      decoration: const InputDecoration(
+                        labelText: 'الولاية',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: mauritaniaWilayas.keys
+                          .map((w) => DropdownMenuItem(value: w, child: Text(w)))
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) return;
+                        setDialogState(() {
+                          selectedWilaya = val;
+                          selectedMoughataa = mauritaniaWilayas[val]!.first;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    DropdownButtonFormField<String>(
+                      value: selectedMoughataa,
+                      decoration: const InputDecoration(
+                        labelText: 'المقاطعة',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: moughataas
+                          .map((m) => DropdownMenuItem(value: m, child: Text(m)))
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) return;
+                        setDialogState(() => selectedMoughataa = val);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (nameCtrl.text.trim().isEmpty) return;
+                    await LocalAndCloudService.addSchool({
+                      'id': DateTime.now().millisecondsSinceEpoch.toString(),
+                      'year': widget.yearTitle,
+                      'name': nameCtrl.text.trim(),
+                      'wilaya': selectedWilaya,
+                      'moughataa': selectedMoughataa,
+                    });
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    _loadSchools();
+                  },
+                  child: const Text('حفظ'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('مدارس السنة (${widget.yearTitle})'),
+        backgroundColor: Colors.white,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddSchoolDialog,
+        backgroundColor: const Color(0xFF4A90E2),
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add),
+        label: const Text('إضافة مدرسة'),
+      ),
+      body: _schools.isEmpty
+          ? const Center(
+              child: Text(
+                'لم تقم بإضافة أي مدرسة بعد.\nاضغط على "إضافة مدرسة" بالأسفل للبدء.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 15),
+              ),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: _schools.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                final s = _schools[index];
+                return ListTile(
+                  tileColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundColor: Color(0xFFE3F2FD),
+                    child: Icon(Icons.account_balance, color: Color(0xFF1565C0)),
+                  ),
+                  title: Text(
+                    s['name'] ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text('${s['wilaya']} -${s['moughataa']}'),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SchoolClassesScreen(
+                          school: s,
+                          teacher: widget.teacher,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+    );
+  }
+}
+
+class SchoolClassesScreen extends StatefulWidget {
+  final Map<String, dynamic> school;
+  final Map<String, dynamic> teacher;
+
+  const SchoolClassesScreen({
+    super.key,
+    required this.school,
+    required this.teacher,
+  });
+
+  @override
+  State<SchoolClassesScreen> createState() => _SchoolClassesScreenState();
+}
+
+class _SchoolClassesScreenState extends State<SchoolClassesScreen> {
+  List> _classes = [];
+  bool _isPaid = false;
+  bool _checkingStatus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isPaid = widget.teacher['isPaid'] == true;
+    _loadClasses();
+    _refreshStatusSilently();
+  }
+
+  Future<void> _refreshStatusSilently() async {
+    final paid = await LocalAndCloudService.refreshSubscriptionStatus();
+    if (!mounted) return;
+    setState(() => _isPaid = paid);
+  }
+
+  Future<void> _loadClasses() async {
+    final list = await LocalAndCloudService.getClasses(widget.school['id'].toString());
+    if (!mounted) return;
+    setState(() => _classes = list);
+  }
+
+  Future<void> _checkSubscriptionButton() async {
+    setState(() => _checkingStatus = true);
+    final paid = await LocalAndCloudService.refreshSubscriptionStatus();
+    if (!mounted) return;
+    setState(() {
+      _isPaid = paid;
+      _checkingStatus = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          paid
+              ? 'تم تفعيل حسابك بنجاح! يمكنك الآن استخدام كافة الميزات.'
+              : 'الحساب غير مفعل بعد، يرجى التواصل مع المدير للتفعيل.',
+        ),
+        backgroundColor: paid ? Colors.green : Colors.orange.shade800,
+      ),
+    );
+  }
+
+  Future<void> _showAddClassDialog() async {
+    if (!_isPaid) {
+      final uri = Uri.parse(
+        '[https://wa.me/$](https://wa.me/$){AppConfig.adminWhatsApp}?text=${Uri.encodeComponent("السلام عليكم، أرغب في تفعيل اشتراكي السنوي في تطبيق سكرتير المدرسة. رقم هاتفي المسجل هو: ${widget.teacher['phone']}")}',
+      );
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+      return;
+    }
+
+    String selectedStage = educationLevels.keys.first;
+    String selectedGrade = educationLevels[selectedStage]!.first;
+
+    await showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            final grades = educationLevels[selectedStage] ?? [];
+            return AlertDialog(
+              title: const Text('إضافة قسم دراسي'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<String>(
+                    value: selectedStage,
+                    decoration: const InputDecoration(
+                      labelText: 'المرحلة الدراسية',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: educationLevels.keys
+                        .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                        .toList(),
+                    onChanged: (val) {
+                      if (val == null) return;
+                      setDialogState(() {
+                        selectedStage = val;
+                        selectedGrade = educationLevels[val]!.first;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    value: selectedGrade,
+                    decoration: const InputDecoration(
+                      labelText: 'الفصل / القسم',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: grades
+                        .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                        .toList(),
+                    onChanged: (val) {
+                      if (val == null) return;
+                      setDialogState(() => selectedGrade = val);
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await LocalAndCloudService.addClass({
+                      'id': DateTime.now().millisecondsSinceEpoch.toString(),
+                      'schoolId': widget.school['id'].toString(),
+                      'stage': selectedStage,
+                      'grade': selectedGrade,
+                    });
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    _loadClasses();
+                  },
+                  child: const Text('إضافة'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.school['name'] ?? 'الأقسام'),
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: _checkingStatus ? null : _checkSubscriptionButton,
+            icon: const Icon(Icons.sync),
+            tooltip: 'تحديث حالة التفعيل',
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddClassDialog,
+        backgroundColor: _isPaid ? const Color(0xFF4A90E2) : Colors.orange.shade800,
+        foregroundColor: Colors.white,
+        icon: Icon(_isPaid ? Icons.add : Icons.lock_outline),
+        label: Text(_isPaid ? 'إضافة قسم' : 'تفعيل الحساب لإضافة أقسام'),
+      ),
+      body: Column(
+        children: [
+          if (!_isPaid)
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF3E0),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.orange.shade300),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'الحساب بانتظار التفعيل السنوي (${AppConfig.subscriptionPriceText})',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'رقم هاتفك المسجل: ${widget.teacher['phone']} — تواصل مع المدير (${AppConfig.displayPhone}) لتفعيل حسابك فورا ثم اضغط زر التحديث بالأعلى.',
+                    style: const TextStyle(fontSize: 12, color: Colors.black87),
+                  ),
+                ],
+              ),
+            ),
+          Expanded(
+            child: _classes.isEmpty
+                ? const Center(
+                    child: Text(
+                      'لا توجد أقسام مضافة في هذه المدرسة حالياً.',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  )
+                : ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _classes.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final c = _classes[index];
+                      return ListTile(
+                        tileColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        leading: const Icon(Icons.class_, color: Color(0xFF4A90E2)),
+                        title: Text(
+                          '${c['grade']}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text('المرحلة: ${c['stage']}'),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
